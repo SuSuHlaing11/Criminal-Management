@@ -21,7 +21,7 @@ public class Add extends Application {
     Parent root = fxmlLoader.load();
     Scene scene = new Scene(root);
 
-    primaryStage.setTitle("Admin Page");
+    primaryStage.setTitle("Add Page");
     primaryStage.setScene(scene);
     primaryStage.show();
   }
