@@ -153,7 +153,7 @@
    <center>
       <VBox prefHeight="600.0" prefWidth="0.0" style="-fx-background-color: #ffffff;" styleClass="right-border" stylesheets="@application/styles/Admin-final.css" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="27.0" prefWidth="239.0" style="-fx-background-color: #13123A;" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
+            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="15.0" prefWidth="254.0" style="-fx-background-color: #13123A;" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
                <children>
                   <TextField prefHeight="26.0" prefWidth="232.0" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
                      <HBox.margin>
@@ -298,28 +298,31 @@
       </VBox>
    </center>
    <right>
-      <VBox prefHeight="599.0" prefWidth="528.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="599.0" prefWidth="483.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="513.0" style="-fx-background-color: #13123A;" styleClass="menu-bar1" stylesheets="@application/styles/Admin-final.css">
+            <HBox alignment="CENTER" prefHeight="55.0" prefWidth="530.0" style="-fx-background-color: #13123A;" styleClass="menu-bar1" stylesheets="@application/styles/Admin-final.css">
                <children>
-                  <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="854.0" styleClass="inbox-label" stylesheets="@application/styles/Admin-final.css" text="First Information Report" textFill="WHITE">
+                  <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="0.0" prefWidth="528.0" styleClass="inbox-label" stylesheets="@application/styles/Admin-final.css" text="First Information Report" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <AnchorPane prefHeight="150.0" prefWidth="513.0" style="-fx-background-color: #FFFFFF;">
+            <AnchorPane prefHeight="146.0" prefWidth="528.0" style="-fx-background-color: #FFFFFF;">
                <children>
-                  <ImageView fitHeight="133.0" fitWidth="191.0" layoutX="174.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="8.26666412353515" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="147.0" AnchorPane.topAnchor="8.0">
+                  <ImageView fitHeight="105.0" fitWidth="149.0" layoutX="175.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.066664123535162" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="204.79999999999995" AnchorPane.topAnchor="9.0">
                      <image>
                         <Image url="@../../../../Pictures/Dawnload/ragdoll.jpg" />
                      </image>
                   </ImageView>
                </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
             </AnchorPane>
             <Separator prefWidth="200.0" />
-            <AnchorPane prefHeight="600.0" prefWidth="872.0" style="-fx-background-color: #ffffff;">
+            <AnchorPane prefHeight="449.0" prefWidth="529.0" style="-fx-background-color: #ffffff;">
                <children>
                   <HBox layoutX="98.0" layoutY="84.0" prefHeight="46.0" prefWidth="528.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
