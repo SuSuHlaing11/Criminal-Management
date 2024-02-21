@@ -153,26 +153,22 @@
    <center>
       <VBox prefHeight="600.0" prefWidth="0.0" style="-fx-background-color: #ffffff;" styleClass="right-border" stylesheets="@application/styles/Admin-final.css" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="46.0" styleClass="menu-bar1" stylesheets="@application/styles/Admin-final.css">
+            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="27.0" prefWidth="239.0" style="-fx-background-color: #13123A;" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
                <children>
-                  <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="27.0" prefWidth="239.0" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
-                     <children>
-                        <TextField prefHeight="26.0" prefWidth="232.0" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </TextField>
-                        <ImageView fitHeight="25.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@application/image/magnifying-glass.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
+                  <TextField prefHeight="26.0" prefWidth="232.0" styleClass="trasparent-text-field" stylesheets="@application/styles/Admin-final.css">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+                  <ImageView fitHeight="25.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@application/image/icons8-search-64.png" />
+                     </image>
+                  </ImageView>
                </children>
-               <VBox.margin>
-                  <Insets bottom="11.0" />
-               </VBox.margin>
+               <padding>
+                  <Insets bottom="6.0" left="5.0" right="3.0" top="5.0" />
+               </padding>
             </HBox>
             <HBox alignment="CENTER" prefHeight="34.0" spacing="4.0">
                <children>
@@ -194,7 +190,7 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ScrollPane prefHeight="507.0" prefWidth="254.0">
+            <ScrollPane prefHeight="553.0" prefWidth="254.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="542.0" prefWidth="254.0" style="-fx-background-color: #ffffff;">
                      <children>
