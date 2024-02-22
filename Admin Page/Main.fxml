@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderpane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="971.0" stylesheets="@styles/Admin-final.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
+   <left>
+      <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="219.0" spacing="28.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="153.0" prefWidth="219.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="177.0" layoutX="35.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@image/icons8-male-user-50.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Button fx:id="scene1" mnemonicParsing="false" onAction="#btnscene1" prefHeight="43.0" prefWidth="227.0" styleClass="sidebar_button" text="FIR" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="scene2" mnemonicParsing="false" onAction="#btnscene2" prefHeight="43.0" prefWidth="237.0" styleClass="sidebar_button" text="Operators" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="scene3" mnemonicParsing="false" onAction="#btnscene3" prefHeight="43.0" prefWidth="290.0" styleClass="sidebar_button" text="New" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <AnchorPane prefHeight="159.0" prefWidth="219.0">
+               <children>
+                  <Button layoutX="84.0" layoutY="66.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="219.0" styleClass="sidebar_button" text="Logout" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="119.19999999999999">
+                     <graphic>
+                        <ImageView fitHeight="34.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@image/icons8-logout-50.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+         <styleClass>
+            <String fx:value="primary-color" />
+            <String fx:value="right-border" />
+         </styleClass>
+      </VBox>
+   </left>
+</BorderPane>
