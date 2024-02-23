@@ -11,5 +11,5 @@ public class scene3Controller {
   private URL location;
 
   @FXML
-  void initialize() {}
+  public void initialize() {}
 }

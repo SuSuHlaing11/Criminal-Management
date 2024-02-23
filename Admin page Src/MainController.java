@@ -29,6 +29,9 @@ public class MainController {
   private Button scene3;
 
   @FXML
+  private Button scene31;
+
+  @FXML
   void btnscene1(ActionEvent event) throws IOException {
     AnchorPane view = FXMLLoader.load(getClass().getResource("scene1.fxml"));
     borderpane.setCenter(view);
@@ -47,6 +50,12 @@ public class MainController {
   }
 
   @FXML
+  void btnscene31(ActionEvent event) throws IOException {
+    AnchorPane view = FXMLLoader.load(getClass().getResource("scene31.fxml"));
+    borderpane.setCenter(view);
+  }
+
+  @FXML
   void initialize() {
     assert borderpane !=
     null : "fx:id=\"borderpane\" was not injected: check your FXML file 'Main.fxml'.";
@@ -56,5 +65,7 @@ public class MainController {
     null : "fx:id=\"scene2\" was not injected: check your FXML file 'Main.fxml'.";
     assert scene3 !=
     null : "fx:id=\"scene3\" was not injected: check your FXML file 'Main.fxml'.";
+    assert scene31 !=
+    null : "fx:id=\"scene31\" was not injected: check your FXML file 'Main.fxml'.";
   }
 }
