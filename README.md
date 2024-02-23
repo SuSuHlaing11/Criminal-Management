@@ -20,3 +20,16 @@ Set up Javafx SDK with Scene Builder using VsCode
 To set up jafafx, follow the youtube link given below:)
 
 *[How to setup JavaFX in Visual Studio Code 2021](https://youtu.be/AubJaosfI-0?si=2DZRfaU6Y4HB1JJ6).
+
+
+### <font color = "red">Running the project</font> 
+------------------------------------------------
+*First create the java project using VsCode with `No Built Tools`.
+
+*Choose the folder of your project, write the project name.
+
+*Before running the project, you need to add confirguration to your `lunch.json` file.
+With your <font color="yellow">own</font> project name.
+```
+--module-path "\path\to\javafx-sdk-21.0.2\lib" --add-modules javafx.controls,javafx.fxml
+```
