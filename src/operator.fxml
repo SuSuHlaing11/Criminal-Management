@@ -19,31 +19,38 @@
          <top>
             <BorderPane prefHeight="401.0" prefWidth="200.0" style="-fx-background-color: #13123a;" BorderPane.alignment="CENTER">
                <top>
-                  <ImageView fitHeight="240.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                  <ImageView fx:id="UserImage" fitHeight="240.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <image>
                         <Image url="@../../../icons8-male-user-50.png" />
                      </image>
                   </ImageView>
                </top>
                <center>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Operator" textAlignment="CENTER" wrappingWidth="169.98307609558105" BorderPane.alignment="CENTER">
+                  <Text fx:id="OperatorText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Operator" textAlignment="CENTER" wrappingWidth="169.98307609558105" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="Verdana" size="26.0" />
                      </font>
                   </Text>
-               </center></BorderPane>
+               </center>
+               <bottom>
+                  <Text fx:id="VCText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Verdana" size="23.0" />
+                     </font>
+                  </Text>
+               </bottom></BorderPane>
          </top></BorderPane>
-      <BorderPane layoutX="237.0" layoutY="27.0" prefHeight="92.0" prefWidth="390.0" style="-fx-background-color: #13123a;">
+      <BorderPane layoutX="237.0" layoutY="27.0" prefHeight="92.0" prefWidth="69.0" style="-fx-background-color: #13123a;">
          <center>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="View Criminal" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="Verdana" size="23.0" />
-               </font>
-            </Text>
+            <AnchorPane prefHeight="92.0" prefWidth="99.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="102.0" fitWidth="150.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
          </center>
       </BorderPane>
-      <TextField layoutX="229.0" layoutY="138.0" prefHeight="25.0" prefWidth="189.0" promptText="Search" />
-      <MenuButton centerShape="false" layoutX="451.0" layoutY="138.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Criminal Name">
+      <TextField fx:id="SearchTextfield" layoutX="229.0" layoutY="152.0" prefHeight="25.0" prefWidth="189.0" promptText="Search" />
+      <MenuButton fx:id="SortMenubutton" centerShape="false" layoutX="450.0" layoutY="151.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Criminal Name">
         <items>
           <MenuItem mnemonicParsing="false" text="Criminal Name" />
           <MenuItem mnemonicParsing="false" text="Criminal ID" />
@@ -53,7 +60,7 @@
         </items>
       </MenuButton>
       <Accordion />
-      <TableView layoutX="223.0" layoutY="180.0" prefHeight="200.0" prefWidth="400.0">
+      <TableView fx:id="CriminalTable" layoutX="223.0" layoutY="180.0" prefHeight="200.0" prefWidth="400.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Name" />
           <TableColumn prefWidth="75.0" text="Criminal ID" />
