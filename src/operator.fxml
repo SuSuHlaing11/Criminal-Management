@@ -1,57 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="operatorController">
    <children>
-      <TextField fx:id="SearchTextfield" layoutX="29.0" layoutY="262.0" prefHeight="25.0" prefWidth="234.0" promptText="Search" />
+      <TextField fx:id="searchField1" layoutX="36.0" layoutY="261.0" prefHeight="25.0" prefWidth="234.0" promptText="Search" />
       <Accordion />
-      <TableView fx:id="CriminalTable" layoutX="29.0" layoutY="320.0" prefHeight="209.0" prefWidth="915.0">
+      <TableView fx:id="criminalTable1" layoutX="26.0" layoutY="297.0" onMouseClicked="#displayInfo1" prefHeight="228.0" prefWidth="918.0" stylesheets="@styles/operator.css">
         <columns>
-            <TableColumn prefWidth="55.20001220703125" text="ID" />
-          <TableColumn prefWidth="112.80001831054688" text="Name" />
-          <TableColumn prefWidth="130.39999389648438" text="Type" />
-            <TableColumn prefWidth="172.800048828125" sortType="DESCENDING" text="Crime Scene" />
-            <TableColumn prefWidth="168.79998779296875" text="Address" />
-            <TableColumn prefWidth="183.99993896484375" sortType="DESCENDING" text="NRC" />
-            <TableColumn minWidth="0.0" prefWidth="93.60003662109375" sortType="DESCENDING" text="Gender" />
+            <TableColumn fx:id="cid1" prefWidth="55.20001220703125" text="ID" />
+          <TableColumn fx:id="cname1" prefWidth="112.80001831054688" text="Name" />
+          <TableColumn fx:id="ctype1" prefWidth="130.39999389648438" text="Type" />
+            <TableColumn fx:id="cscene1" prefWidth="172.800048828125" sortType="DESCENDING" text="Crime Scene" />
+            <TableColumn fx:id="caddress1" prefWidth="168.79998779296875" text="Address" />
+            <TableColumn fx:id="cnrc1" prefWidth="183.99993896484375" sortType="DESCENDING" text="NRC" />
+            <TableColumn fx:id="cgender1" minWidth="0.0" prefWidth="93.60003662109375" sortType="DESCENDING" text="Gender" />
         </columns>
          <effect>
             <Blend />
          </effect>
       </TableView>
-      <MenuButton fx:id="SortMenubutton" centerShape="false" layoutX="288.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="ID">
+      <MenuButton fx:id="filterBtn1" centerShape="false" layoutX="358.0" layoutY="261.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="All">
         <items>
-            <MenuItem mnemonicParsing="false" text="ID" />
-          <MenuItem mnemonicParsing="false" text="Name" />
-          <MenuItem mnemonicParsing="false" text="Type" />
-            <MenuItem mnemonicParsing="false" text="Crime Scene" />
-            <MenuItem mnemonicParsing="false" text="Address" />
-            <MenuItem mnemonicParsing="false" text="NRC" />
-            <MenuItem mnemonicParsing="false" text="Gender" />
+            <MenuItem mnemonicParsing="false" onAction="#searchAll1" text="All" />
+            <MenuItem mnemonicParsing="false" onAction="#searchID1" text="ID" />
+          <MenuItem mnemonicParsing="false" onAction="#searchName1" text="Name" />
+          <MenuItem mnemonicParsing="false" onAction="#searchType1" text="Type" />
+            <MenuItem mnemonicParsing="false" onAction="#searchCscene1" text="Crime Scene" />
+            <MenuItem mnemonicParsing="false" onAction="#searchAddress1" text="Address" />
+            <MenuItem mnemonicParsing="false" onAction="#searchNRC1" text="NRC" />
         </items>
       </MenuButton>
-      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="775.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" />
-      <BorderPane layoutX="-1.0" prefHeight="217.0" prefWidth="714.0" style="-fx-background-color: #13123a;">
+      <ImageView fx:id="crimeImage1" fitHeight="150.0" fitWidth="150.0" layoutX="775.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="75.0">
+         <image>
+            <Image url="@image/DefultProfile.jpg" />
+         </image></ImageView>
+      <BorderPane prefHeight="51.0" prefWidth="971.0" style="-fx-background-color: #13123a;">
          <center>
-            <Text fx:id="VCText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Operator" BorderPane.alignment="CENTER">
+            <Text fx:id="VCText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Crime Management System ( Operator )" wrappingWidth="636.6539916992188" BorderPane.alignment="CENTER">
                <font>
                   <Font name="Verdana" size="30.0" />
                </font>
             </Text>
          </center>
+         <right>
+            <Button mnemonicParsing="false" styleClass="logout-button" stylesheets="@styles/operator.css" text="Log Out" textFill="WHITE" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
       </BorderPane>
-      <TextField fx:id="idText" alignment="CENTER" editable="false" layoutX="775.0" layoutY="193.0" style="-fx-background-color: transparent;" />
+      <TextField fx:id="idText1" alignment="CENTER" editable="false" layoutX="801.0" layoutY="225.0" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: transparent;" />
+      <Label layoutX="295.0" layoutY="265.0" text="Filter by:" />
+      <BorderPane prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane layoutX="2.0" layoutY="51.0" prefHeight="200.0" prefWidth="760.0">
+         <children>
+            <HBox layoutX="42.0" layoutY="28.0" prefHeight="26.0" prefWidth="274.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="69.0" text="Name" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="nameText1" prefHeight="26.0" prefWidth="211.0" />
+               </children>
+            </HBox>
+            <HBox layoutX="42.0" layoutY="80.0" prefHeight="26.0" prefWidth="274.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="69.0" text="Type" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="typeText1" prefHeight="26.0" prefWidth="211.0" />
+               </children>
+            </HBox>
+            <HBox layoutX="7.0" layoutY="134.0" prefHeight="26.0" prefWidth="310.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="138.0" text="Crime Scene" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="csceneText1" prefHeight="26.0" prefWidth="245.0" />
+               </children>
+            </HBox>
+            <HBox layoutX="388.0" layoutY="28.0" prefHeight="26.0" prefWidth="274.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="69.0" text="Address" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="addressText1" prefHeight="26.0" prefWidth="211.0" />
+               </children>
+            </HBox>
+            <HBox layoutX="388.0" layoutY="80.0" prefHeight="26.0" prefWidth="274.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="69.0" text="NRC" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="nrcText1" prefHeight="26.0" prefWidth="211.0" />
+               </children>
+            </HBox>
+            <HBox layoutX="388.0" layoutY="134.0" prefHeight="26.0" prefWidth="274.0">
+               <children>
+                  <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="69.0" text="Gender" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="genderText1" prefHeight="26.0" prefWidth="211.0" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
