@@ -60,7 +60,7 @@
             </Text>
          </center>
          <right>
-            <Button mnemonicParsing="false" styleClass="logout-button" stylesheets="@styles/operator.css" text="Log Out" textFill="WHITE" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" styleClass="logout-button" stylesheets="@operator.css" text="Log Out" textFill="WHITE" BorderPane.alignment="CENTER">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
