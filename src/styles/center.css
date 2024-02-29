@@ -1,0 +1,52 @@
+* {
+    -fx-primary-color: #13123A;
+    -fx-secondary-color: #00002C;
+    -fx-grey-color: #b9b9b9;
+    -fx-focus-color: -fx-secondary-color;
+}
+
+.primary-color {
+    background-color: #13123A;
+    -fx-background-color: #13123A;
+}
+
+.secondary-color {
+    background-color: #00002C;
+    -fx-background-color: #00002C;
+}
+
+.search-bar {
+    border-color: #D2D2D2;
+    -fx-border-color: #D2D2D2;
+}
+
+.button {
+    background-color: #242551;
+    -fx-background-color: #242551;
+    -fx-background-radius: 30px;
+}
+
+.button:hover {
+    background-color: #454599;
+    -fx-background-color: #454599;
+}
+
+
+.text-field {
+    background-color: rgba(255, 255, 255, 0);
+    -fx-accent: -fx-primary-color;
+    -fx-background-color: -fx-grey-color, white;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 0;
+}
+
+.text-field:focused {
+    background-color: rgb(255, 255, 255);
+    -fx-background-color: -fx-primary-color, white;
+}
+
+.operator_button {
+    background-color: #242551;
+    -fx-background-color: #242551;
+    -fx-background-radius: 30px;
+}

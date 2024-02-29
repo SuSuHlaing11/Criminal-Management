@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ManageOperatorController">
+   <children>
+      <VBox layoutX="186.0" layoutY="31.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="288.0" prefWidth="752.0">
+               <children>
+                  <AnchorPane layoutX="161.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: darkblue; -fx-border-radius: 15 15 15 15;" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="17.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" layoutX="9.600000000000001" layoutY="7.2" prefHeight="26.0" prefWidth="710.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="6.0">
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@image/magnifying-glass.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="searchField2" prefHeight="26.0" prefWidth="246.0" promptText="Search" />
+                              <Label opacity="0.8" prefHeight="18.0" prefWidth="54.0" text="Filter By: ">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin></Label>
+                              <MenuButton fx:id="filterBtn2" mnemonicParsing="false" prefHeight="26.0" prefWidth="84.0" text="All">
+                                <items>
+                                    <MenuItem fx:id="searchAll2" mnemonicParsing="false" text="All" />
+                                  <MenuItem mnemonicParsing="false" onAction="#searchName2" text="Name" />
+                                    <MenuItem mnemonicParsing="false" onAction="#searchUser2" text="Username" />
+                                    <MenuItem mnemonicParsing="false" onAction="#searchEmail2" text="Email" />
+                                </items>
+                              </MenuButton>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </HBox>
+                        <TableView fx:id="operatorTable" layoutX="278.0" layoutY="54.0" onMouseClicked="#displayInfo2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="38.0">
+                          <columns>
+                              <TableColumn fx:id="cname2" prefWidth="71.19997864961624" text="Name" />
+                            <TableColumn fx:id="cuser2" prefWidth="140.0" text="Username" />
+                              <TableColumn fx:id="cemail2" prefWidth="143.19996643066406" text="Email Address" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="288.0" prefWidth="752.0">
+               <children>
+                  <AnchorPane layoutX="7.2" prefHeight="268.0" prefWidth="738.0" style="-fx-border-color: darkblue;" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" layoutX="26.0" layoutY="40.0" prefHeight="26.0" prefWidth="333.0" spacing="5.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="90.0" text="Name">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="nameText2" prefHeight="26.0" prefWidth="238.0" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="26.0" layoutY="93.0" prefHeight="26.0" prefWidth="333.0" spacing="5.0" AnchorPane.topAnchor="93.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="86.0" text="User Name">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="userText2" prefHeight="26.0" prefWidth="227.0" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutY="146.0" prefHeight="26.0" prefWidth="359.0" spacing="5.0" AnchorPane.topAnchor="146.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="122.0" text="Email Address">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="emailText2" prefHeight="26.0" prefWidth="242.0" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </HBox>
+                        <Button layoutX="302.0" layoutY="185.0" mnemonicParsing="false" onMouseClicked="#updateInfo1" prefHeight="38.0" prefWidth="133.0" styleClass="crud_button" text="Update" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <HBox alignment="CENTER_LEFT" layoutX="355.0" layoutY="40.0" prefHeight="26.0" prefWidth="359.0" spacing="5.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="122.0" text="Password">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="pwText2" prefHeight="26.0" prefWidth="242.0" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="351.0" layoutY="93.0" prefHeight="26.0" prefWidth="366.0" spacing="5.0">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="122.0" text="Confirm Password">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="cpwText2" prefHeight="26.0" prefWidth="242.0" />
+                           </children>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </HBox>
+                        <Label fx:id="error" alignment="BOTTOM_LEFT" layoutX="489.0" layoutY="125.0" prefHeight="18.0" prefWidth="234.0" textFill="RED" />
+                        <Label fx:id="no" alignment="CENTER" layoutX="251.0" layoutY="233.0" prefHeight="18.0" prefWidth="234.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@styles/scene3.css" />
+      <URL value="@styles/center.css" />
+   </stylesheets>
+</AnchorPane>
