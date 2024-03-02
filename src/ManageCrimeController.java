@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +21,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,7 +33,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 public class ManageCrimeController implements Initializable {
 
@@ -66,13 +76,25 @@ public class ManageCrimeController implements Initializable {
   private TableColumn<Model, String> ctype;
 
   @FXML
+  private TableColumn<Model, Integer> cage;
+
+  @FXML
+  private TableColumn<Model, LocalDate> cdate;
+
+  @FXML
   private TextField searchField;
 
   @FXML
   private TextField nameText;
 
   @FXML
-  private TextField typeText;
+  private TextField ageText;
+
+  @FXML
+  private ChoiceBox<String> typeText;
+
+  @FXML
+  private DatePicker cdateText;
 
   @FXML
   private TextField csceneText;
@@ -87,9 +109,6 @@ public class ManageCrimeController implements Initializable {
   private ImageView crimeImage;
 
   @FXML
-  private ChoiceBox<String> genderText;
-
-  @FXML
   private Button importBtn;
 
   @FXML
@@ -97,6 +116,30 @@ public class ManageCrimeController implements Initializable {
 
   @FXML
   private MenuButton filterBtn;
+
+  @FXML
+  private Label notice;
+
+  @FXML
+  private Label invalidNRC;
+
+  @FXML
+  private Label invalidAge;
+
+  @FXML
+  private Label invalidDate;
+
+  @FXML
+  private RadioButton male;
+
+  @FXML
+  private RadioButton female;
+
+  @FXML
+  private RadioButton others;
+
+  @FXML
+  private ToggleGroup toggleGp;
 
   @FXML
   void searchAll(ActionEvent event) {
@@ -147,27 +190,68 @@ public class ManageCrimeController implements Initializable {
     searchField.setText("");
   }
 
+  @FXML
+  void searchAge(ActionEvent event) {
+    filterBtn.setText("Age");
+    filterValue.fValue = "age";
+    searchField.setText("");
+  }
+
+  @FXML
+  void searchDate(ActionEvent event) {
+    filterBtn.setText("Date");
+    filterValue.fValue = "date";
+    searchField.setText("");
+  }
+
+  @FXML
+  void searchGender(ActionEvent event) {
+    filterBtn.setText("Gender");
+    filterValue.fValue = "gender";
+    searchField.setText("");
+  }
+
+  public class filterValue {
+    public static String fValue;
+    public static Integer img;
+  }
+
   ObservableList<Model> ModelObservableList = FXCollections.observableArrayList();
 
   @Override
   public void initialize(URL url, ResourceBundle resource) {
 
-    cname.setCellFactory(column -> new WrappingTextTableCell<>());
-    ctype.setCellFactory(column -> new WrappingTextTableCell<>());
-    cscene.setCellFactory(column -> new WrappingTextTableCell<>());
-    caddress.setCellFactory(column -> new WrappingTextTableCell<>());
-    cnrc.setCellFactory(column -> new WrappingTextTableCell<>());
-    cgender.setCellFactory(column -> new WrappingTextTableCell<>());
+    typeText.getItems().addAll(type);
+
+    cdateText.setDayCellFactory(new RestrictFutureDateCellFactory());
+
+    cdateText.setConverter(new StringConverter<LocalDate>() {
+      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+      @Override
+      public String toString(LocalDate date) {
+        return (date != null) ? dateFormatter.format(date) : "";
+      }
+
+      @Override
+      public LocalDate fromString(String string) {
+        return (string != null && !string.isEmpty()) ? LocalDate.parse(string, dateFormatter) : null;
+      }
+    });
+
+    toggleGp = new ToggleGroup();
+    male.setToggleGroup(toggleGp);
+    female.setToggleGroup(toggleGp);
+    others.setToggleGroup(toggleGp);
 
     filterValue.fValue = "all";
-    ModelObservableList = FXCollections.observableArrayList(); // Initialize the ObservableList
 
-    genderText.getItems().addAll(gender);
+    ModelObservableList = FXCollections.observableArrayList();
 
     Database connectNow = new Database();
     Connection connectDB = connectNow.getDBConnection();
 
-    String crimeViewQuery = "Select ID, Name, Type, Address, Crime_Scene, Gender, NRC FROM criminals";
+    String crimeViewQuery = "Select ID, Name, Age, Type, Address, Date, Crime_Scene, Gender, NRC FROM criminals";
 
     try {
 
@@ -178,23 +262,37 @@ public class ManageCrimeController implements Initializable {
 
         Integer queryID = queryOutput.getInt("ID");
         String queryName = queryOutput.getString("Name");
+        Integer queryAge = queryOutput.getInt("Age");
         String queryType = queryOutput.getString("Type");
         String queryAddress = queryOutput.getString("Address");
         String queryCrime_scene = queryOutput.getString("Crime_scene");
         String queryGender = queryOutput.getString("Gender");
         String queryNRC = queryOutput.getString("NRC");
 
+        java.sql.Date sqlDate = queryOutput.getDate("Date");
+        LocalDate queryDate = (sqlDate != null) ? sqlDate.toLocalDate() : null;
+
         ModelObservableList
-            .add(new Model(queryID, queryName, queryType, queryAddress, queryCrime_scene, queryGender, queryNRC));
+            .add(new Model(queryID, queryName, queryAge, queryType, queryAddress, queryDate, queryCrime_scene,
+                queryGender, queryNRC));
       }
 
       cid.setCellValueFactory(new PropertyValueFactory<>("ID"));
       cname.setCellValueFactory(new PropertyValueFactory<>("Name"));
+      cage.setCellValueFactory(new PropertyValueFactory<>("Age"));
       ctype.setCellValueFactory(new PropertyValueFactory<>("Type"));
       caddress.setCellValueFactory(new PropertyValueFactory<>("Address"));
+      cdate.setCellValueFactory(new PropertyValueFactory<>("Date"));
       cscene.setCellValueFactory(new PropertyValueFactory<>("Crime_scene"));
       cgender.setCellValueFactory(new PropertyValueFactory<>("Gender"));
       cnrc.setCellValueFactory(new PropertyValueFactory<>("NRC"));
+
+      cname.setCellFactory(column -> new WrappingTextTableCell<>());
+      ctype.setCellFactory(column -> new WrappingTextTableCell<>());
+      cscene.setCellFactory(column -> new WrappingTextTableCell<>());
+      caddress.setCellFactory(column -> new WrappingTextTableCell<>());
+      cnrc.setCellFactory(column -> new WrappingTextTableCell<>());
+      cgender.setCellFactory(column -> new WrappingTextTableCell<>());
 
       criminalTable.setItems(ModelObservableList);
 
@@ -212,7 +310,11 @@ public class ManageCrimeController implements Initializable {
           if (filterValue.fValue == "all") {
             if (Model.getName().toLowerCase().indexOf(searchKeyword) > -1) {
               return true;
+            } else if (String.valueOf(Model.getAge()).toLowerCase().contains(searchKeyword.toLowerCase())) {
+              return true;
             } else if (Model.getType().toLowerCase().indexOf(searchKeyword) > -1) {
+              return true;
+            } else if (Model.getDate().toString().indexOf(searchKeyword) > -1) {
               return true;
             } else if (Model.getCrime_scene().toLowerCase().indexOf(searchKeyword) > -1) {
               return true;
@@ -222,13 +324,19 @@ public class ManageCrimeController implements Initializable {
               return true;
             } else if (Model.getNRC().toLowerCase().indexOf(searchKeyword) > -1) {
               return true;
+            } else if (Model.getGender().toLowerCase().indexOf(searchKeyword) > -1) {
+              return true;
             } else
               return false;
           }
 
           if (filterValue.fValue == "name" && Model.getName().toLowerCase().indexOf(searchKeyword) > -1) {
             return true;
+          } else if (filterValue.fValue == "age" && Model.getAge().toString().indexOf(searchKeyword) > -1) {
+            return true;
           } else if (filterValue.fValue == "type" && Model.getType().toLowerCase().indexOf(searchKeyword) > -1) {
+            return true;
+          } else if (filterValue.fValue == "date" && Model.getDate().toString().indexOf(searchKeyword) > -1) {
             return true;
           } else if (filterValue.fValue == "cscene"
               && Model.getCrime_scene().toLowerCase().indexOf(searchKeyword) > -1) {
@@ -238,6 +346,9 @@ public class ManageCrimeController implements Initializable {
           } else if (filterValue.fValue == "id" && Model.getID().toString().indexOf(searchKeyword) > -1) {
             return true;
           } else if (filterValue.fValue == "nrc" && Model.getNRC().toLowerCase().indexOf(searchKeyword) > -1) {
+            return true;
+          } else if (filterValue.fValue == "gender"
+              && Model.getGender().toLowerCase().indexOf(searchKeyword) > -1) {
             return true;
           } else
             return false;
@@ -259,43 +370,83 @@ public class ManageCrimeController implements Initializable {
 
   }
 
-  public class filterValue {
-    public static String fValue;
-    public static Integer img;
+  private static class RestrictFutureDateCellFactory implements Callback<DatePicker, DateCell> {
+    @Override
+    public DateCell call(final DatePicker datePicker) {
+      return new DateCell() {
+        @Override
+        public void updateItem(LocalDate item, boolean empty) {
+          super.updateItem(item, empty);
+
+          // Disable future dates
+          if (item.isAfter(LocalDate.now())) {
+            setDisable(true);
+            setStyle("-fx-background-color: #bfbfbf;");
+          }
+        }
+      };
+    }
   }
 
-  private String[] gender = { "Male", "Female" };
+  private String[] type = { "Murder", "Robbery", "Smuggling Weapons", "Smuggling Drug", "Fraud", "Others" };
+
+  private void disableInputComponents(boolean disable) {
+    nameText.setDisable(disable);
+    typeText.setDisable(disable);
+    ageText.setDisable(disable);
+    cdateText.setDisable(disable);
+    csceneText.setDisable(disable);
+    addressText.setDisable(disable);
+    nrcText.setDisable(disable);
+    male.setDisable(disable);
+    female.setDisable(disable);
+    others.setDisable(disable);
+    importBtn.setDisable(disable);
+    updateBtn.setDisable(disable);
+  }
 
   @FXML
   void displayInfo(MouseEvent event) {
-    Model Name = criminalTable.getSelectionModel().getSelectedItem();
+    Model selectedModel = criminalTable.getSelectionModel().getSelectedItem();
 
-    if (Name == null) {
+    if (selectedModel == null) {
       nameText.setText(" ");
-      importBtn.setDisable(true);
+      disableInputComponents(true);
     } else {
-      Integer id = Name.getID();
-      String name = Name.getName();
-      String type = Name.getType();
-      String address = Name.getAddress();
-      String crimeScene = Name.getCrime_scene();
-      String gender = Name.getGender();
-      String nrc = Name.getNRC();
+      Integer id = selectedModel.getID();
+      String name = selectedModel.getName();
+      Integer age = selectedModel.getAge();
+      String type = selectedModel.getType();
+      String address = selectedModel.getAddress();
+      LocalDate date = selectedModel.getDate();
+      String crimeScene = selectedModel.getCrime_scene();
+      String nrc = selectedModel.getNRC();
+      String gender = selectedModel.getGender();
+
+      if ("Male".equals(gender)) {
+        toggleGp.selectToggle(male);
+      } else if ("Female".equals(gender)) {
+        toggleGp.selectToggle(female);
+      } else {
+        toggleGp.selectToggle(others);
+      }
+
       nameText.setText(name);
-      typeText.setText(type);
+      ageText.setText(String.valueOf(age));
+      typeText.setValue(type);
       addressText.setText(address);
+      cdateText.setValue(date);
       csceneText.setText(crimeScene);
-      genderText.setValue(gender);
       nrcText.setText(nrc);
+
+      filterValue.img = id;
 
       File file = new File("src\\image\\" + id + ".jpg");
       Image crimeImg = new Image(file.toURI().toString());
       crimeImage.setImage(crimeImg);
 
-      filterValue.img = id;
+      disableInputComponents(false);
 
-      importBtn.setDisable(false);
-      updateBtn.setDisable(false);
     }
   }
 
@@ -335,45 +486,120 @@ public class ManageCrimeController implements Initializable {
 
     int id = selectedModel.getID();
     String updatedName = nameText.getText();
-    String updatedType = typeText.getText();
+    int updatedAge = selectedModel.getAge();
+    String updatedType = typeText.getValue();
     String updatedAddress = addressText.getText();
+    LocalDate updatedDate = cdateText.getValue();
     String updatedCrimeScene = csceneText.getText();
-    String updatedGender = genderText.getValue();
     String updatedNRC = nrcText.getText();
+    String updatedGender;
+
+    if (male.isSelected()) {
+      updatedGender = "Male";
+    } else if (female.isSelected()) {
+      updatedGender = "Female";
+    } else {
+      updatedGender = "Others";
+    }
 
     selectedModel.setName(updatedName);
+    selectedModel.setAge(updatedAge);
     selectedModel.setType(updatedType);
     selectedModel.setAddress(updatedAddress);
+    selectedModel.setDate(updatedDate);
     selectedModel.setCrime_scene(updatedCrimeScene);
     selectedModel.setGender(updatedGender);
     selectedModel.setNRC(updatedNRC);
 
-    Database connectNow = new Database();
-    Connection connectDB = connectNow.getDBConnection();
+    LocalDate currentDate = LocalDate.now();
 
-    String updateQuery = "UPDATE criminals SET Name=?, Type=?, Address=?, Crime_scene=?, Gender=?, NRC=? WHERE ID=?";
+    String nrcPattern = "^([0-9]{1,2})\\/([A-Z])([A-Z])([A-Z])\\([N,P,E]\\)[0-9]{6}$";
 
-    try (PreparedStatement preparedStatement = connectDB.prepareStatement(updateQuery)) {
-      preparedStatement.setString(1, updatedName);
-      preparedStatement.setString(2, updatedType);
-      preparedStatement.setString(3, updatedAddress);
-      preparedStatement.setString(4, updatedCrimeScene);
-      preparedStatement.setString(5, updatedGender);
-      preparedStatement.setString(6, updatedNRC);
-      preparedStatement.setInt(7, id);
+    if (updatedAge > 100) {
 
-      int rowsAffected = preparedStatement.executeUpdate();
+      if (updatedNRC.matches(nrcPattern)) {
 
-      if (rowsAffected > 0) {
-        System.out.println("Update successful!");
-      } else {
-        System.out.println("Update failed!");
-      }
+        if (updatedDate.isAfter(currentDate)) {
 
-    } catch (SQLException e) {
-      Logger.getLogger(ManageCrimeController.class.getName()).log(Level.SEVERE, null, e);
-      e.printStackTrace();
-    }
+          Database connectNow = new Database();
+          Connection connectDB = connectNow.getDBConnection();
 
+          String updateQuery = "UPDATE criminals SET Name=?, Age=?, Type=?, Address=?, Date=?, Crime_scene=?, Gender=?, NRC=? WHERE ID=?";
+
+          try (PreparedStatement preparedStatement = connectDB.prepareStatement(updateQuery)) {
+            preparedStatement.setString(1, updatedName);
+            preparedStatement.setInt(2, updatedAge);
+            preparedStatement.setString(3, updatedType);
+            preparedStatement.setString(4, updatedAddress);
+            preparedStatement.setObject(5, updatedDate);
+            preparedStatement.setString(6, updatedCrimeScene);
+            preparedStatement.setString(7, updatedGender);
+            preparedStatement.setString(8, updatedNRC);
+            preparedStatement.setInt(9, id);
+
+            notice.setText("Update Successful!");
+
+            Image defaultImage = new Image(getClass().getResourceAsStream("/image/DefultDescription.jpg"));
+            crimeImage.setImage(defaultImage);
+
+            nameText.setText("");
+            ageText.setText("");
+            nrcText.setText("");
+            toggleGp.selectToggle(null);
+            addressText.setText("");
+            cdateText.setValue(null);
+            csceneText.setText("");
+            typeText.setValue("");
+            invalidNRC.setText("");
+            invalidAge.setText("");
+            invalidDate.setText("");
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+              System.out.println("Update successful!");
+            } else {
+              System.out.println("Update failed!");
+            }
+
+          } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(ManageCrimeController.class.getName()).log(Level.SEVERE, null, e);
+          }
+        } else
+          invalidDate.setText("Invalid Date");
+        invalidNRC.setText("");
+        invalidAge.setText("");
+
+      } else
+        invalidNRC.setText("Invalid NRC Format.");
+      invalidDate.setText("");
+      invalidAge.setText("");
+
+    } else
+      invalidAge.setText("Invaid Age");
+    invalidNRC.setText("");
+    invalidDate.setText("");
   }
+
+  @FXML
+  void showDes(MouseEvent event) {
+    showFullImage();
+  }
+
+  private void showFullImage() {
+
+    Stage fullImageStage = new Stage();
+
+    ImageView fullImageView = new ImageView(crimeImage.getImage());
+
+    fullImageStage.setScene(new javafx.scene.Scene(new javafx.scene.layout.StackPane(fullImageView)));
+
+    fullImageStage.setTitle("Criminal Description");
+    fullImageStage.setWidth(600);
+    fullImageStage.setHeight(600);
+
+    fullImageStage.show();
+  }
+
 }

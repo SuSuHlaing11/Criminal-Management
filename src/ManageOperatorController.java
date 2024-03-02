@@ -1,3 +1,4 @@
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,12 +18,17 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.scene.control.TextField;
 
 public class ManageOperatorController implements Initializable {
@@ -38,10 +44,10 @@ public class ManageOperatorController implements Initializable {
     }
 
     @FXML
-    private Label no;
+    private Label notice;
 
     @FXML
-    private Label error;
+    private Label pwError;
 
     @FXML
     private TableView<Model1> operatorTable;
@@ -56,10 +62,10 @@ public class ManageOperatorController implements Initializable {
     private TableColumn<Model1, String> cuser2;
 
     @FXML
-    private TextField pwText2;
+    private PasswordField pwText2;
 
     @FXML
-    private TextField cpwText2;
+    private PasswordField cpwText2;
 
     @FXML
     private TextField nameText2;
@@ -75,6 +81,15 @@ public class ManageOperatorController implements Initializable {
 
     @FXML
     private MenuButton filterBtn2;
+
+    @FXML
+    private Button updateBtn1;
+
+    @FXML
+    private Button uploadBtn;
+
+    @FXML
+    private ImageView operatorID1;
 
     @FXML
     void searchAll2(ActionEvent event) {
@@ -108,20 +123,9 @@ public class ManageOperatorController implements Initializable {
         public static String fValue;
     }
 
-    @FXML
-    void displayInfo2(MouseEvent event) {
-        Model1 Name = operatorTable.getSelectionModel().getSelectedItem();
-
-        if (Name == null) {
-            nameText2.setText(" ");
-        } else {
-            String name = Name.getName();
-            String username = Name.getUsername();
-            String email = Name.getEmail();
-            nameText2.setText(name);
-            userText2.setText(username);
-            emailText2.setText(email);
-        }
+    public class User {
+        public static String oldUser;
+        public static String oldUserImg;
     }
 
     ObservableList<Model1> ModelObservableList = FXCollections.observableArrayList();
@@ -139,7 +143,7 @@ public class ManageOperatorController implements Initializable {
         Database connectNow = new Database();
         Connection connectDB = connectNow.getDBConnection();
 
-        String crimeViewQuery = "Select Name, Username, Email_Address FROM operator";
+        String crimeViewQuery = "Select Name, Username, Email_Address FROM users  WHERE Type='Operator'";
 
         try {
 
@@ -212,8 +216,69 @@ public class ManageOperatorController implements Initializable {
 
     }
 
+    private void disableInputComponents(boolean disable) {
+        nameText2.setDisable(disable);
+        userText2.setDisable(disable);
+        emailText2.setDisable(disable);
+        pwText2.setDisable(disable);
+        cpwText2.setDisable(disable);
+        updateBtn1.setDisable(false);
+        uploadBtn.setDisable(false);
+    }
+
+    @FXML
+    void displayInfo2(MouseEvent event) {
+        Model1 Name = operatorTable.getSelectionModel().getSelectedItem();
+
+        if (Name == null) {
+            nameText2.setText(" ");
+            disableInputComponents(true);
+        } else {
+            String name = Name.getName();
+            String username = Name.getUsername();
+            String email = Name.getEmail();
+            nameText2.setText(name);
+            userText2.setText(username);
+            emailText2.setText(email);
+
+            User.oldUser = username;
+
+            File file = new File("src\\image\\" + User.oldUser + ".jpg");
+            Image operatorImg = new Image(file.toURI().toString());
+            operatorID1.setImage(operatorImg);
+
+            disableInputComponents(false);
+
+        }
+    }
+
     private static String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    @FXML
+    void uploadID(MouseEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.jpg"));
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            String newFileName = User.oldUser + ".jpg";
+
+            File selectedFolder = new File("src\\image");
+            selectedFolder.mkdirs();
+
+            File newLocation = new File(selectedFolder, newFileName);
+            selectedFile.renameTo(newLocation);
+
+            Image image = new Image(newLocation.toURI().toString());
+            operatorID1.setImage(image);
+
+            User.oldUserImg = newFileName;
+        }
     }
 
     @FXML
@@ -222,6 +287,7 @@ public class ManageOperatorController implements Initializable {
         Model1 selectedModel = operatorTable.getSelectionModel().getSelectedItem();
 
         if (selectedModel != null) {
+
             String updatedName = nameText2.getText();
             String updatedUser = userText2.getText();
             String updatedEmail = emailText2.getText();
@@ -240,22 +306,30 @@ public class ManageOperatorController implements Initializable {
 
                 String hashedPassword = hashPassword(updatedpw);
 
-                try {
-                    // Sleep for 2 seconds (2000 milliseconds)
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                no.setText("Update successful.");
-
-                String updateQuery = "UPDATE operator SET Name=?, Password=?, Email_Address=? WHERE Username=?";
+                String updateQuery = "UPDATE users SET Name=?, Username=?, Password=?, Email_Address=? WHERE Username=?";
 
                 try (PreparedStatement preparedStatement = connectDB.prepareStatement(updateQuery)) {
                     preparedStatement.setString(1, updatedName);
-                    preparedStatement.setString(2, hashedPassword);
-                    preparedStatement.setString(3, updatedEmail);
-                    preparedStatement.setString(4, updatedUser);
+                    preparedStatement.setString(2, updatedUser);
+                    preparedStatement.setString(3, hashedPassword);
+                    preparedStatement.setString(4, updatedEmail);
+                    preparedStatement.setString(5, User.oldUser);
+
+                    File oldFile = new File("src\\image\\" + User.oldUserImg);
+                    File newFile = new File("src\\image\\" + updatedUser + ".jpg");
+                    oldFile.renameTo(newFile);
+
+                    notice.setText("Update successful.");
+
+                    Image defaultImage = new Image(getClass().getResourceAsStream("/image/DefultID.jpg"));
+                    operatorID1.setImage(defaultImage);
+
+                    nameText2.setText("");
+                    userText2.setText("");
+                    emailText2.setText("");
+                    pwText2.setText("");
+                    cpwText2.setText("");
+                    pwError.setText("");
 
                     int rowsAffected = preparedStatement.executeUpdate();
 
@@ -270,7 +344,7 @@ public class ManageOperatorController implements Initializable {
                     e.printStackTrace();
                 }
             } else {
-                error.setText("Password doesn't match.");
+                pwError.setText("Password doesn't match.");
             }
         }
 

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,9 +47,6 @@ public class operatorController implements Initializable {
     private TextField genderText1;
 
     @FXML
-    private TextField idText1;
-
-    @FXML
     private TextField nameText1;
 
     @FXML
@@ -56,6 +54,12 @@ public class operatorController implements Initializable {
 
     @FXML
     private TextField nrcText1;
+
+    @FXML
+    private TextField ageText1;
+
+    @FXML
+    private TextField cdateText1;
 
     @FXML
     private TextField searchField1;
@@ -68,6 +72,9 @@ public class operatorController implements Initializable {
 
     @FXML
     private TableView<Model> criminalTable1;
+
+    @FXML
+    private TableColumn<Model, Integer> cage1;
 
     @FXML
     private TableColumn<Model, String> caddress1;
@@ -89,6 +96,9 @@ public class operatorController implements Initializable {
 
     @FXML
     private TableColumn<Model, String> ctype1;
+
+    @FXML
+    private TableColumn<Model, LocalDate> cdate1;
 
     @FXML
     private ImageView crimeImage1;
@@ -156,36 +166,29 @@ public class operatorController implements Initializable {
         searchField1.setText("");
     }
 
-    public class filterValue {
-        public static String fValue;
+    @FXML
+    void searchAge1(ActionEvent event) {
+        filterBtn1.setText("Age");
+        filterValue.fValue = "age";
+        searchField1.setText("");
     }
 
     @FXML
-    void displayInfo1(MouseEvent event) {
-        Model Name = criminalTable1.getSelectionModel().getSelectedItem();
+    void searchGender1(ActionEvent event) {
+        filterBtn1.setText("Gender");
+        filterValue.fValue = "gender";
+        searchField1.setText("");
+    }
 
-        if (Name == null) {
-            nameText1.setText(" ");
-        } else {
-            Integer id = Name.getID();
-            String name = Name.getName();
-            String type = Name.getType();
-            String address = Name.getAddress();
-            String crimeScene = Name.getCrime_scene();
-            String gender = Name.getGender();
-            String nrc = Name.getNRC();
-            idText1.setText(Integer.toString(id));
-            nameText1.setText(name);
-            typeText1.setText(type);
-            addressText1.setText(address);
-            csceneText1.setText(crimeScene);
-            genderText1.setText(gender);
-            nrcText1.setText(nrc);
+    @FXML
+    void searchCdate1(ActionEvent event) {
+        filterBtn1.setText("Date");
+        filterValue.fValue = "date";
+        searchField1.setText("");
+    }
 
-            File file = new File("src\\image\\" + id + ".jpg");
-            Image crimeImg = new Image(file.toURI().toString());
-            crimeImage1.setImage(crimeImg);
-        }
+    public class filterValue {
+        public static String fValue;
     }
 
     ObservableList<Model> ModelObservableList = FXCollections.observableArrayList();
@@ -193,20 +196,14 @@ public class operatorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resource) {
 
-        cname1.setCellFactory(column -> new WrappingTextTableCell<>());
-        ctype1.setCellFactory(column -> new WrappingTextTableCell<>());
-        cscene1.setCellFactory(column -> new WrappingTextTableCell<>());
-        caddress1.setCellFactory(column -> new WrappingTextTableCell<>());
-        cnrc1.setCellFactory(column -> new WrappingTextTableCell<>());
-        cgender1.setCellFactory(column -> new WrappingTextTableCell<>());
-
         filterValue.fValue = "all";
+
         ModelObservableList = FXCollections.observableArrayList(); // Initialize the ObservableList
 
         Database connectNow = new Database();
         Connection connectDB = connectNow.getDBConnection();
 
-        String crimeViewQuery = "Select ID, Name, Type, Address, Crime_Scene, Gender, NRC FROM criminals";
+        String crimeViewQuery = "Select ID, Name, Age, Type, Address, Date, Crime_Scene, Gender, NRC FROM criminals";
 
         try {
 
@@ -217,24 +214,38 @@ public class operatorController implements Initializable {
 
                 Integer queryID = queryOutput.getInt("ID");
                 String queryName = queryOutput.getString("Name");
+                Integer queryAge = queryOutput.getInt("Age");
                 String queryType = queryOutput.getString("Type");
                 String queryAddress = queryOutput.getString("Address");
                 String queryCrime_scene = queryOutput.getString("Crime_scene");
                 String queryGender = queryOutput.getString("Gender");
                 String queryNRC = queryOutput.getString("NRC");
 
+                java.sql.Date sqlDate = queryOutput.getDate("Date");
+                LocalDate queryDate = (sqlDate != null) ? sqlDate.toLocalDate() : null;
+
                 ModelObservableList
-                        .add(new Model(queryID, queryName, queryType, queryAddress, queryCrime_scene, queryGender,
-                                queryNRC));
+                        .add(new Model(queryID, queryName, queryAge, queryType, queryAddress, queryDate,
+                                queryCrime_scene,
+                                queryGender, queryNRC));
             }
 
             cid1.setCellValueFactory(new PropertyValueFactory<>("ID"));
             cname1.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            cage1.setCellValueFactory(new PropertyValueFactory<>("Age"));
             ctype1.setCellValueFactory(new PropertyValueFactory<>("Type"));
             caddress1.setCellValueFactory(new PropertyValueFactory<>("Address"));
+            cdate1.setCellValueFactory(new PropertyValueFactory<>("Date"));
             cscene1.setCellValueFactory(new PropertyValueFactory<>("Crime_scene"));
             cgender1.setCellValueFactory(new PropertyValueFactory<>("Gender"));
             cnrc1.setCellValueFactory(new PropertyValueFactory<>("NRC"));
+
+            cname1.setCellFactory(column -> new WrappingTextTableCell<>());
+            ctype1.setCellFactory(column -> new WrappingTextTableCell<>());
+            cscene1.setCellFactory(column -> new WrappingTextTableCell<>());
+            caddress1.setCellFactory(column -> new WrappingTextTableCell<>());
+            cnrc1.setCellFactory(column -> new WrappingTextTableCell<>());
+            cgender1.setCellFactory(column -> new WrappingTextTableCell<>());
 
             criminalTable1.setItems(ModelObservableList);
 
@@ -252,7 +263,11 @@ public class operatorController implements Initializable {
                     if (filterValue.fValue == "all") {
                         if (Model.getName().toLowerCase().indexOf(searchKeyword) > -1) {
                             return true;
+                        } else if (String.valueOf(Model.getAge()).toLowerCase().contains(searchKeyword.toLowerCase())) {
+                            return true;
                         } else if (Model.getType().toLowerCase().indexOf(searchKeyword) > -1) {
+                            return true;
+                        } else if (Model.getDate().toString().indexOf(searchKeyword) > -1) {
                             return true;
                         } else if (Model.getCrime_scene().toLowerCase().indexOf(searchKeyword) > -1) {
                             return true;
@@ -262,14 +277,20 @@ public class operatorController implements Initializable {
                             return true;
                         } else if (Model.getNRC().toLowerCase().indexOf(searchKeyword) > -1) {
                             return true;
+                        } else if (Model.getGender().toLowerCase().indexOf(searchKeyword) > -1) {
+                            return true;
                         } else
                             return false;
                     }
 
                     if (filterValue.fValue == "name" && Model.getName().toLowerCase().indexOf(searchKeyword) > -1) {
                         return true;
+                    } else if (filterValue.fValue == "age" && Model.getAge().toString().indexOf(searchKeyword) > -1) {
+                        return true;
                     } else if (filterValue.fValue == "type"
                             && Model.getType().toLowerCase().indexOf(searchKeyword) > -1) {
+                        return true;
+                    } else if (filterValue.fValue == "date" && Model.getDate().toString().indexOf(searchKeyword) > -1) {
                         return true;
                     } else if (filterValue.fValue == "cscene"
                             && Model.getCrime_scene().toLowerCase().indexOf(searchKeyword) > -1) {
@@ -281,6 +302,9 @@ public class operatorController implements Initializable {
                         return true;
                     } else if (filterValue.fValue == "nrc"
                             && Model.getNRC().toLowerCase().indexOf(searchKeyword) > -1) {
+                        return true;
+                    } else if (filterValue.fValue == "gender"
+                            && Model.getGender().toLowerCase().indexOf(searchKeyword) > -1) {
                         return true;
                     } else
                         return false;
@@ -300,6 +324,38 @@ public class operatorController implements Initializable {
             e.printStackTrace();
         }
 
+    }
+
+    @FXML
+    void displayInfo1(MouseEvent event) {
+        Model selectedModel = criminalTable1.getSelectionModel().getSelectedItem();
+
+        if (selectedModel == null) {
+            nameText1.setText(" ");
+        } else {
+            Integer id = selectedModel.getID();
+            String name = selectedModel.getName();
+            Integer age = selectedModel.getAge();
+            String type = selectedModel.getType();
+            String address = selectedModel.getAddress();
+            LocalDate date = selectedModel.getDate();
+            String crimeScene = selectedModel.getCrime_scene();
+            String gender = selectedModel.getGender();
+            String nrc = selectedModel.getNRC();
+
+            nameText1.setText(name);
+            ageText1.setText(Integer.toString(age));
+            typeText1.setText(type);
+            addressText1.setText(address);
+            cdateText1.setText(date.toString());
+            csceneText1.setText(crimeScene);
+            genderText1.setText(gender);
+            nrcText1.setText(nrc);
+
+            File file = new File("src\\image\\" + id + ".jpg");
+            Image crimeImg = new Image(file.toURI().toString());
+            crimeImage1.setImage(crimeImg);
+        }
     }
 
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,12 +13,18 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.util.StringConverter;
 
 public class AddCrimeController implements Initializable {
 
@@ -43,18 +51,36 @@ public class AddCrimeController implements Initializable {
     private TextField name;
 
     @FXML
-    private TextField type;
+    private ChoiceBox<String> typeBox;
 
     @FXML
     private TextField nrc;
 
     @FXML
+    private TextField age;
+
+    @FXML
+    private DatePicker cdate;
+
+    @FXML
+    private Label invalidNRC;
+
+    @FXML
     private ImageView crimeImage1;
 
     @FXML
-    private ChoiceBox<String> genderText1;
+    private RadioButton male1;
 
-    private String[] gender = { "Male", "Female" };
+    @FXML
+    private RadioButton female1;
+
+    @FXML
+    private RadioButton others1;
+
+    @FXML
+    private ToggleGroup toggleGp;
+
+    private String[] type = { "Murder", "Robbery", "Smuggling Weapons", "Smuggling Drug", "Fraud", "Others" };
 
     public class imgId {
         public static Integer imgid;
@@ -62,9 +88,49 @@ public class AddCrimeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
-        genderText1.getItems().addAll(gender);
+        typeBox.getItems().addAll(type);
+
+        toggleGp = new ToggleGroup();
+        male1.setToggleGroup(toggleGp);
+        female1.setToggleGroup(toggleGp);
+        others1.setToggleGroup(toggleGp);
 
         imgId.imgid = getLatestIdFromDatabase();
+
+        cdate.setDayCellFactory(new RestrictFutureDateCellFactory());
+
+        cdate.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+            @Override
+            public String toString(LocalDate date) {
+                return (date != null) ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return (string != null && !string.isEmpty()) ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
+
+    }
+
+    private static class RestrictFutureDateCellFactory implements Callback<DatePicker, DateCell> {
+        @Override
+        public DateCell call(final DatePicker datePicker) {
+            return new DateCell() {
+                @Override
+                public void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    // Disable future dates
+                    if (item.isAfter(LocalDate.now())) {
+                        setDisable(true);
+                        setStyle("-fx-background-color: #bfbfbf;");
+                    }
+                }
+            };
+        }
     }
 
     private int getLatestIdFromDatabase() {
@@ -109,45 +175,75 @@ public class AddCrimeController implements Initializable {
     @FXML
     void addData(MouseEvent event) {
         String nameTem = name.getText();
-        String typeTem = type.getText();
+        int ageTem = Integer.parseInt(age.getText());
+        String nrcTem = nrc.getText();
+        String typeTem = typeBox.getValue();
         String csceneTem = cscene.getText();
         String addressTem = address.getText();
-        String nrcTem = nrc.getText();
-        String genderTem = genderText1.getValue();
+        String genderTem;
 
-        Database connectNow = new Database();
-        Connection connectDB = connectNow.getDBConnection();
+        if (male1.isSelected()) {
+            genderTem = "Male";
+        } else if (female1.isSelected()) {
+            genderTem = "Female";
+        } else {
+            genderTem = "Others";
+        }
 
-        String insertQuery = "INSERT INTO criminals (Name, Type, Address, Crime_Scene, Gender, NRC) VALUES (?, ?, ?, ?, ?, ?)";
+        String nrcPattern = "^([0-9]{1,2})\\/([A-Z])([A-Z])([A-Z])\\([N,P,E]\\)[0-9]{6}$";
 
-        try (PreparedStatement preparedStatement = connectDB.prepareStatement(insertQuery)) {
-            preparedStatement.setString(1, nameTem);
-            preparedStatement.setString(2, typeTem);
-            preparedStatement.setString(3, addressTem);
-            preparedStatement.setString(4, csceneTem);
-            preparedStatement.setString(5, genderTem);
-            preparedStatement.setString(6, nrcTem);
+        if (nrcTem.matches(nrcPattern)) {
 
-            int affectedRows = preparedStatement.executeUpdate();
+            LocalDate selectedDate = cdate.getValue();
+            String cdateTem = selectedDate != null ? selectedDate.toString() : null;
 
-            if (affectedRows > 0) {
-                System.out.println("Data inserted successfully!");
-            } else {
-                System.out.println("Failed to insert data.");
+            Database connectNow = new Database();
+            Connection connectDB = connectNow.getDBConnection();
+
+            String insertQuery = "INSERT INTO criminals (Name, Age, Type, Address, Date, Crime_Scene, Gender, NRC) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connectDB.prepareStatement(insertQuery)) {
+                preparedStatement.setString(1, nameTem);
+                preparedStatement.setInt(2, ageTem);
+                preparedStatement.setString(3, typeTem);
+                preparedStatement.setString(4, addressTem);
+                preparedStatement.setString(5, cdateTem);
+                preparedStatement.setString(6, csceneTem);
+                preparedStatement.setString(7, genderTem);
+                preparedStatement.setString(8, nrcTem);
+
+                int affectedRows = preparedStatement.executeUpdate();
+
+                connectDB.setAutoCommit(true);
+
+                if (affectedRows > 0) {
+                    System.out.println("Data inserted successfully!");
+                } else {
+                    System.out.println("Failed to insert data.");
+                }
+
+                name.setText("");
+                age.setText("");
+                typeBox.setValue("");
+                address.setText("");
+                cscene.setText("");
+                nrc.setText("");
+                toggleGp.selectToggle(null);
+                cdate.setValue(null);
+                invalidNRC.setText("");
+
+                Image defaultImage = new Image(getClass().getResourceAsStream("/image/DefultDescription.jpg"));
+                crimeImage1.setImage(defaultImage);
+
+                registerSuccess.setText("Registration successful.");
+
+            } catch (SQLException e) {
+                Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, e);
+                e.printStackTrace();
             }
 
-            name.setText("");
-            type.setText("");
-            address.setText("");
-            cscene.setText("");
-            nrc.setText("");
-            genderText1.setValue("");
-
-            registerSuccess.setText("Registration successful.");
-
-        } catch (SQLException e) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, e);
-            e.printStackTrace();
+        } else {
+            invalidNRC.setText("Invalid NRC Format.");
         }
     }
 

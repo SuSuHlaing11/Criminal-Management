@@ -5,11 +5,13 @@ import javafx.scene.text.Text;
 public class WrappingTextTableCell<T> extends TableCell<T, String> {
     private final Text text;
 
+    private static final double PADDING = 10.0;
+
     public WrappingTextTableCell() {
         text = new Text();
         setGraphic(text);
         setPrefHeight(Control.USE_COMPUTED_SIZE);
-        text.wrappingWidthProperty().bind(widthProperty());
+        text.wrappingWidthProperty().bind(widthProperty().subtract(PADDING));
         text.setSmooth(true);
     }
 

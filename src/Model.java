@@ -1,13 +1,20 @@
+import java.time.LocalDate;
+
 public class Model {
 
-    Integer ID;
+    Integer ID, Age;
     String Name, Type, Address, Crime_scene, Gender, NRC;
+    LocalDate Date;
 
-    public Model(Integer ID, String Name, String Type, String Address, String Crime_scene, String Gender, String NRC) {
+    public Model(Integer ID, String Name, Integer Age, String Type, String Address, LocalDate Date, String Crime_scene,
+            String Gender,
+            String NRC) {
         this.ID = ID;
         this.Name = Name;
+        this.Age = Age;
         this.Type = Type;
         this.Address = Address;
+        this.Date = Date;
         this.Crime_scene = Crime_scene;
         this.Gender = Gender;
         this.NRC = NRC;
@@ -21,8 +28,16 @@ public class Model {
         return Name;
     }
 
+    public Integer getAge() {
+        return Age;
+    }
+
     public String getType() {
         return Type;
+    }
+
+    public LocalDate getDate() {
+        return Date;
     }
 
     public String getAddress() {
@@ -49,12 +64,20 @@ public class Model {
         this.Name = Name;
     }
 
+    public void setAge(Integer Age) {
+        this.Age = Age;
+    }
+
     public void setType(String Type) {
         this.Type = Type;
     }
 
     public void setAddress(String Address) {
         this.Address = Address;
+    }
+
+    public void setDate(LocalDate Date) {
+        this.Date = Date;
     }
 
     public void setCrime_scene(String Crime_scene) {

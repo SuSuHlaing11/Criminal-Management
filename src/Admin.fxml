@@ -10,20 +10,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="971.0" stylesheets="@styles/Admin-final.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminController">
+<BorderPane fx:id="borderpane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="1100.0" stylesheets="@styles/Admin-final.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminController">
    <left>
       <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="219.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="171.0" prefWidth="218.0">
+            <Pane prefHeight="178.0" prefWidth="218.0">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="177.0" layoutX="35.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="150.0" fitWidth="177.0" layoutX="34.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@image/icons8-male-user-50.png" />
                      </image>
                   </ImageView>
                </children>
             </Pane>
-            <AnchorPane prefHeight="348.0" prefWidth="227.0">
+            <AnchorPane prefHeight="331.0" prefWidth="221.0">
                <children>
                   <Button fx:id="scene1" layoutY="33.0" mnemonicParsing="false" onAction="#btnscene1" prefHeight="35.0" prefWidth="218.0" styleClass="sidebar_button" text="Add Crime" textFill="WHITE">
                      <font>
@@ -35,7 +35,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="logout" layoutX="84.0" layoutY="348.8" mnemonicParsing="false" onMouseClicked="#loginscene" prefHeight="46.0" prefWidth="227.0" styleClass="sidebar_button" text="Logout" textFill="WHITE" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="349.0">
+                  <Button fx:id="logout" layoutY="389.0" mnemonicParsing="false" onMouseClicked="#loginscene" prefHeight="44.0" prefWidth="220.0" styleClass="sidebar_button" text="Logout" textFill="WHITE" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="389.0">
                      <graphic>
                         <ImageView fitHeight="34.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
