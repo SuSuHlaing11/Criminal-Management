@@ -486,7 +486,7 @@ public class ManageCrimeController implements Initializable {
 
     int id = selectedModel.getID();
     String updatedName = nameText.getText();
-    int updatedAge = selectedModel.getAge();
+    int updatedAge = Integer.parseInt(ageText.getText());
     String updatedType = typeText.getValue();
     String updatedAddress = addressText.getText();
     LocalDate updatedDate = cdateText.getValue();
@@ -502,24 +502,15 @@ public class ManageCrimeController implements Initializable {
       updatedGender = "Others";
     }
 
-    selectedModel.setName(updatedName);
-    selectedModel.setAge(updatedAge);
-    selectedModel.setType(updatedType);
-    selectedModel.setAddress(updatedAddress);
-    selectedModel.setDate(updatedDate);
-    selectedModel.setCrime_scene(updatedCrimeScene);
-    selectedModel.setGender(updatedGender);
-    selectedModel.setNRC(updatedNRC);
-
     LocalDate currentDate = LocalDate.now();
 
     String nrcPattern = "^([0-9]{1,2})\\/([A-Z])([A-Z])([A-Z])\\([N,P,E]\\)[0-9]{6}$";
 
-    if (updatedAge > 100) {
+    if (updatedAge < 100) {
 
       if (updatedNRC.matches(nrcPattern)) {
 
-        if (updatedDate.isAfter(currentDate)) {
+        if (updatedDate.isBefore(currentDate)) {
 
           Database connectNow = new Database();
           Connection connectDB = connectNow.getDBConnection();
@@ -566,20 +557,23 @@ public class ManageCrimeController implements Initializable {
             e.printStackTrace();
             Logger.getLogger(ManageCrimeController.class.getName()).log(Level.SEVERE, null, e);
           }
-        } else
+        } else {
           invalidDate.setText("Invalid Date");
-        invalidNRC.setText("");
-        invalidAge.setText("");
+          invalidNRC.setText("");
+          invalidAge.setText("");
+        }
 
-      } else
+      } else {
         invalidNRC.setText("Invalid NRC Format.");
-      invalidDate.setText("");
-      invalidAge.setText("");
+        invalidDate.setText("");
+        invalidAge.setText("");
+      }
 
-    } else
+    } else {
       invalidAge.setText("Invaid Age");
-    invalidNRC.setText("");
-    invalidDate.setText("");
+      invalidNRC.setText("");
+      invalidDate.setText("");
+    }
   }
 
   @FXML

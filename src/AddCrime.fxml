@@ -151,9 +151,11 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Label fx:id="registerSuccess" alignment="CENTER" layoutX="304.0" layoutY="503.0" prefHeight="18.0" prefWidth="278.0" textFill="#1a9944" />
+                        <Label fx:id="registerSuccess" alignment="CENTER" layoutX="304.0" layoutY="503.0" prefHeight="18.0" prefWidth="278.0" textAlignment="CENTER" textFill="#1a9944" />
                         <Button layoutX="350.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#importImg1" prefHeight="26.0" prefWidth="186.0" styleClass="import_btn" stylesheets="@styles/center.css" text="Upload Description" textFill="WHITE" AnchorPane.bottomAnchor="340.5999999999999" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="317.1999999999998" />
-                        <Label fx:id="invalidNRC" layoutX="202.0" layoutY="376.0" prefHeight="18.0" prefWidth="167.0" textFill="RED" />
+                        <Label fx:id="invalidNRC" layoutX="202.0" layoutY="376.0" prefHeight="18.0" prefWidth="182.0" textFill="RED" />
+                        <Label fx:id="invalidAge" layoutX="202.0" layoutY="323.0" prefHeight="18.0" prefWidth="182.0" textFill="RED" />
+                        <Label fx:id="invalidDate" layoutX="569.0" layoutY="375.0" prefHeight="18.0" prefWidth="182.0" textFill="RED" />
                      </children>
                   </AnchorPane>
                </children>

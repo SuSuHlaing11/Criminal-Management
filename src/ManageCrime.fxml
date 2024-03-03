@@ -187,7 +187,7 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Label fx:id="notice" alignment="CENTER" layoutX="280.0" layoutY="267.0" prefHeight="18.0" prefWidth="315.0" textFill="#108624" />
+                        <Label fx:id="notice" alignment="CENTER" layoutX="301.0" layoutY="265.0" prefHeight="18.0" prefWidth="262.0" textAlignment="CENTER" textFill="#108624" />
                         <Button fx:id="importBtn" disable="true" layoutX="691.0" layoutY="156.0" mnemonicParsing="false" onMouseClicked="#importImg" prefHeight="26.0" prefWidth="160.0" styleClass="import_btn" stylesheets="@styles/center.css" text="Upload Description" textFill="WHITE" AnchorPane.bottomAnchor="117.6" AnchorPane.leftAnchor="691.0" AnchorPane.rightAnchor="15.399999999999977" />
                         <HBox alignment="CENTER_LEFT" layoutX="18.0" layoutY="77.0" prefHeight="26.0" prefWidth="285.0" spacing="5.0">
                            <children>
