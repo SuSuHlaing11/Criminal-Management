@@ -11,6 +11,7 @@ public class login extends Application {
     Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
+    primaryStage.setTitle("Crime Record System");
     primaryStage.show();
   }
 

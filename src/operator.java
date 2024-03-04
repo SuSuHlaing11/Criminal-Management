@@ -11,6 +11,7 @@ public class operator extends Application {
     Parent root = FXMLLoader.load(getClass().getResource("operator.fxml"));
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
+    primaryStage.setTitle("Crime Record System(Operator)");
     primaryStage.show();
   }
 

@@ -11,6 +11,7 @@ public class Admin extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("Admin.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Crime Record System (Admin)");
         // primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
     }
