@@ -33,3 +33,11 @@ With your <font color="yellow">own</font> project name.
 ```
 --module-path "\path\to\javafx-sdk-21.0.2\lib" --add-modules javafx.controls,javafx.fxml
 ```
+
+## Flow Chart
+
+<img
+src="Criminal-Management\FlowChart\CMS.png"
+  alt="Flow Chart for criminal management system"
+  title="Optional title"
+  style="display: inline-block; margin: 0 auto; max-width: 900px max-height: 900px">
