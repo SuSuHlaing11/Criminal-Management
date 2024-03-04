@@ -37,7 +37,7 @@ With your <font color="yellow">own</font> project name.
 ## Flow Chart
 
 <img
-src="Criminal-Management\FlowChart\CMS.png"
+src="FlowChart\CMS.png"
   alt="Flow Chart for criminal management system"
   title="Optional title"
   style="display: inline-block; margin: 0 auto; max-width: 900px max-height: 900px">
